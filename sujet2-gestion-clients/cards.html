@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestion des clients - Sujet 2 — recall</title>
+<style>:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 1.5rem 1rem 4rem;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: #1f2937; background: #f8fafc; line-height: 1.5;
+}
+main { max-width: 640px; margin: 0 auto; }
+header { margin-bottom: 1.5rem; text-align: center; }
+header h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
+header p { margin: 0; color: #6b7280; font-size: .875rem; }
+.progress { color: #6b7280; font-size: .875rem; text-align: right; margin-bottom: .5rem; }
+.section { color: #4f46e5; font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; margin: 0 0 .25rem; }
+.card {
+  background: #fff; border: 1px solid #e5e7eb; border-radius: .75rem;
+  padding: 1.25rem; box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+.q { font-size: 1.2rem; font-weight: 600; margin: 0 0 1rem; white-space: pre-wrap; }
+.hint { color: #6b7280; font-size: .875rem; margin: -.5rem 0 1rem; }
+.reveal { background: #f1f5f9; border-radius: .5rem; padding: 1rem; margin: 1rem 0; white-space: pre-wrap; }
+ul.answers { margin: .5rem 0 0; padding-left: 1.25rem; }
+textarea {
+  width: 100%; min-height: 7rem; padding: .75rem; border: 1px solid #cbd5e1;
+  border-radius: .5rem; font: inherit; resize: vertical; margin-bottom: 1rem;
+}
+button {
+  font: inherit; cursor: pointer; border-radius: .5rem; border: 1px solid transparent;
+}
+.btn {
+  display: block; width: 100%; padding: .85rem 1rem; font-weight: 600;
+  background: #4f46e5; color: #fff; margin-top: 1rem;
+}
+.btn:hover { background: #4338ca; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.opt {
+  display: block; width: 100%; text-align: left; padding: .8rem 1rem; margin: .5rem 0;
+  background: #fff; border: 1px solid #cbd5e1; color: #1f2937;
+}
+.opt:hover { border-color: #818cf8; }
+.opt.sel { border-color: #4f46e5; background: #eef2ff; }
+.opt.ok { border-color: #16a34a; background: #f0fdf4; }
+.opt.ko { border-color: #dc2626; background: #fef2f2; }
+.opt[disabled] { cursor: default; }
+.verdict { font-weight: 600; margin: 1rem 0 0; }
+.verdict.ok { color: #16a34a; }
+.verdict.ko { color: #dc2626; }
+.explanation {
+  background: #f1f5f9; border-radius: .5rem; padding: .75rem; margin-top: .75rem;
+  font-size: .9rem; white-space: pre-wrap;
+}
+.done { text-align: center; }
+.done .emoji { font-size: 2.5rem; }
+.score { font-size: 1.25rem; font-weight: 700; margin: 1rem 0; }</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Gestion des clients - Sujet 2</h1>
+<p>Quiz hors-ligne — généré par recall. Aucune connexion requise.</p>
+</header>
+<div id="app"></div>
+</main>
+<script id="recall-data" type="application/json">{"title":"Gestion des clients - Sujet 2","cards":[{"type":"flashcard","position":0,"front":"Qu'est-ce qu'une puce RFID et quel est son rôle chez Decathlon ?","back":"C'est une petite étiquette électronique fixée sur chaque article qui s'identifie toute seule, sans contact. Elle alimente en permanence la base de données avec des informations sur les produits et les stocks."},{"type":"flashcard","position":1,"front":"Qu'est-ce que le click and collect ?","back":"C'est le fait de commander un produit en ligne et de venir le retirer directement en magasin. L'application Decathlon indique si le produit est disponible en rayon grâce aux données de stock en temps réel."},{"type":"flashcard","position":2,"front":"Qu'est-ce que l'omnicanal ?","back":"C'est un parcours sans coupure pour le client : il passe du magasin à Internet et d'Internet au magasin sans difficulté. Partout où il va, Decathlon le reconnaît grâce à ses données. Comme un seul carnet de mémoire partagé entre tous les canaux de vente."},{"type":"flashcard","position":3,"front":"Quelles sont les quatre sources qui alimentent la base de données de Decathlon ?","back":"1. Les puces RFID sur chaque article. 2. L'application mobile. 3. La carte de fidélité (qui enregistre les achats). 4. Toutes les ventes, en magasin et en ligne."}]}</script>
+<script>(function () {
+  var data = JSON.parse(document.getElementById('recall-data').textContent);
+  var cards = (data && data.cards) || [];
+  var app = document.getElementById('app');
+  var idx = 0;
+  var qcmScores = [];
+  var LABELS = { cloze: 'Textes à trous', qcm: 'QCM', explain: 'Réponses libres', flashcard: 'Flashcards' };
+  var typeSet = {};
+  cards.forEach(function (c) { typeSet[c.type] = 1; });
+  var multiType = Object.keys(typeSet).length > 1;
+
+  function scoreQcmMulti(selected, correct) {
+    if (!correct.length) return 0;
+    var c = {}, s = {};
+    correct.forEach(function (i) { c[i] = true; });
+    selected.forEach(function (i) { s[i] = true; });
+    var good = 0, bad = 0;
+    Object.keys(s).forEach(function (k) { if (c[k]) good++; else bad++; });
+    var ratio = (good - bad) / correct.length;
+    return Math.round(Math.max(0, Math.min(1, ratio)) * 100);
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function clear() { while (app.firstChild) app.removeChild(app.firstChild); }
+
+  function btn(label, cls, onClick) {
+    var b = el('button', cls || 'btn', label);
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  function render() {
+    clear();
+    if (idx >= cards.length) return renderDone();
+    var card = cards[idx];
+    if (multiType) app.appendChild(el('p', 'section', LABELS[card.type] || ''));
+    var p = el('p', 'progress', (idx + 1) + ' / ' + cards.length);
+    app.appendChild(p);
+    var box = el('section', 'card');
+    app.appendChild(box);
+    if (card.type === 'flashcard') renderReveal(box, card.front, card.back);
+    else if (card.type === 'cloze') renderCloze(box, card);
+    else if (card.type === 'qcm') renderQcm(box, card);
+    else if (card.type === 'explain') renderExplain(box, card);
+    else next();
+  }
+
+  function next() { idx++; render(); }
+
+  function renderReveal(box, question, answer) {
+    box.appendChild(el('p', 'q', question));
+    var reveal = btn('Révéler', 'btn', function () {
+      reveal.remove();
+      box.appendChild(el('div', 'reveal', answer));
+      box.appendChild(btn('Suivant', 'btn', next));
+    });
+    box.appendChild(reveal);
+  }
+
+  function renderCloze(box, card) {
+    box.appendChild(el('p', 'q', card.maskedText));
+    var reveal = btn('Révéler', 'btn', function () {
+      reveal.remove();
+      var wrap = el('div', 'reveal');
+      wrap.appendChild(el('p', null, (card.answers.length > 1 ? 'Réponses :' : 'Réponse :')));
+      var ul = el('ul', 'answers');
+      card.answers.forEach(function (a) {
+        ul.appendChild(el('li', null, a.answer + (a.hint ? ' (' + a.hint + ')' : '')));
+      });
+      wrap.appendChild(ul);
+      box.appendChild(wrap);
+      box.appendChild(btn('Suivant', 'btn', next));
+    });
+    box.appendChild(reveal);
+  }
+
+  function renderQcm(box, card) {
+    box.appendChild(el('p', 'q', card.question));
+    if (card.multi) box.appendChild(el('p', 'hint', 'Plusieurs réponses possibles.'));
+    var selected = [];
+    var validated = false;
+    var optButtons = [];
+    var validateBtn = null;
+
+    function validate() {
+      if (validated) return;
+      validated = true;
+      var score = scoreQcmMulti(selected, card.correctIndices);
+      qcmScores.push(score);
+      optButtons.forEach(function (b, i) {
+        b.disabled = true;
+        var isAnswer = card.correctIndices.indexOf(i) !== -1;
+        var isSel = selected.indexOf(i) !== -1;
+        b.classList.remove('sel');
+        if (isAnswer) b.classList.add('ok');
+        else if (isSel) b.classList.add('ko');
+      });
+      if (validateBtn) validateBtn.remove();
+      var perfect = score === 100;
+      var v = el('p', 'verdict ' + (perfect ? 'ok' : 'ko'),
+        perfect ? 'Bonne réponse !' : 'Pas tout à fait (' + score + '%).');
+      box.appendChild(v);
+      if (card.explanation) {
+        box.appendChild(el('p', 'explanation', (perfect ? '' : 'Pourquoi : ') + card.explanation));
+      }
+      box.appendChild(btn('Suivant', 'btn', next));
+    }
+
+    card.options.forEach(function (opt, i) {
+      var b = el('button', 'opt', opt);
+      b.addEventListener('click', function () {
+        if (validated) return;
+        if (card.multi) {
+          var pos = selected.indexOf(i);
+          if (pos === -1) { selected.push(i); b.classList.add('sel'); }
+          else { selected.splice(pos, 1); b.classList.remove('sel'); }
+        } else {
+          selected = [i];
+          b.classList.add('sel');
+          validate();
+        }
+      });
+      optButtons.push(b);
+      box.appendChild(b);
+    });
+
+    if (card.multi) {
+      validateBtn = btn('Valider', 'btn', validate);
+      box.appendChild(validateBtn);
+    }
+  }
+
+  function renderExplain(box, card) {
+    box.appendChild(el('p', 'q', card.prompt));
+    var ta = el('textarea');
+    ta.placeholder = 'Écris ta réponse avec tes mots…';
+    box.appendChild(ta);
+    var reveal = btn('Voir la réponse modèle', 'btn', function () {
+      reveal.remove();
+      ta.disabled = true;
+      var wrap = el('div', 'reveal');
+      wrap.appendChild(el('p', null, 'Réponse modèle :'));
+      wrap.appendChild(el('p', null, card.modelAnswer));
+      if (card.rubric) wrap.appendChild(el('p', 'hint', 'Critères : ' + card.rubric));
+      box.appendChild(wrap);
+      box.appendChild(btn('Suivant', 'btn', next));
+    });
+    box.appendChild(reveal);
+  }
+
+  function renderDone() {
+    var box = el('section', 'card done');
+    box.appendChild(el('p', 'emoji', '🎉'));
+    box.appendChild(el('p', 'q', 'Terminé !'));
+    if (qcmScores.length) {
+      var avg = Math.round(qcmScores.reduce(function (a, b) { return a + b; }, 0) / qcmScores.length);
+      box.appendChild(el('p', 'score', 'Score QCM moyen : ' + avg + '%'));
+    }
+    box.appendChild(btn('Recommencer', 'btn', function () {
+      idx = 0; qcmScores = []; render();
+    }));
+    app.appendChild(box);
+  }
+
+  render();
+})();</script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestion des clients - Sujet 2 — recall</title>
+<style>:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 1.5rem 1rem 4rem;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: #1f2937; background: #f8fafc; line-height: 1.5;
+}
+main { max-width: 640px; margin: 0 auto; }
+header { margin-bottom: 1.5rem; text-align: center; }
+header h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
+header p { margin: 0; color: #6b7280; font-size: .875rem; }
+.progress { color: #6b7280; font-size: .875rem; text-align: right; margin-bottom: .5rem; }
+.section { color: #4f46e5; font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; margin: 0 0 .25rem; }
+.card {
+  background: #fff; border: 1px solid #e5e7eb; border-radius: .75rem;
+  padding: 1.25rem; box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+.q { font-size: 1.2rem; font-weight: 600; margin: 0 0 1rem; white-space: pre-wrap; }
+.hint { color: #6b7280; font-size: .875rem; margin: -.5rem 0 1rem; }
+.reveal { background: #f1f5f9; border-radius: .5rem; padding: 1rem; margin: 1rem 0; white-space: pre-wrap; }
+ul.answers { margin: .5rem 0 0; padding-left: 1.25rem; }
+textarea {
+  width: 100%; min-height: 7rem; padding: .75rem; border: 1px solid #cbd5e1;
+  border-radius: .5rem; font: inherit; resize: vertical; margin-bottom: 1rem;
+}
+button {
+  font: inherit; cursor: pointer; border-radius: .5rem; border: 1px solid transparent;
+}
+.btn {
+  display: block; width: 100%; padding: .85rem 1rem; font-weight: 600;
+  background: #4f46e5; color: #fff; margin-top: 1rem;
+}
+.btn:hover { background: #4338ca; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.opt {
+  display: block; width: 100%; text-align: left; padding: .8rem 1rem; margin: .5rem 0;
+  background: #fff; border: 1px solid #cbd5e1; color: #1f2937;
+}
+.opt:hover { border-color: #818cf8; }
+.opt.sel { border-color: #4f46e5; background: #eef2ff; }
+.opt.ok { border-color: #16a34a; background: #f0fdf4; }
+.opt.ko { border-color: #dc2626; background: #fef2f2; }
+.opt[disabled] { cursor: default; }
+.verdict { font-weight: 600; margin: 1rem 0 0; }
+.verdict.ok { color: #16a34a; }
+.verdict.ko { color: #dc2626; }
+.explanation {
+  background: #f1f5f9; border-radius: .5rem; padding: .75rem; margin-top: .75rem;
+  font-size: .9rem; white-space: pre-wrap;
+}
+.done { text-align: center; }
+.done .emoji { font-size: 2.5rem; }
+.score { font-size: 1.25rem; font-weight: 700; margin: 1rem 0; }</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Gestion des clients - Sujet 2</h1>
+<p>Quiz hors-ligne — généré par recall. Aucune connexion requise.</p>
+</header>
+<div id="app"></div>
+</main>
+<script id="recall-data" type="application/json">{"title":"Gestion des clients - Sujet 2","cards":[{"type":"explain","position":8,"prompt":"Explique en quoi l'exploitation des données numériques permet à Decathlon de fidéliser ses clients face à la concurrence du e-commerce. Développe les quatre points vus en cours.","modelAnswer":"Decathlon collecte des données via les puces RFID, l'application mobile, la carte de fidélité et les ventes. Ces données sont centralisées dans une base de données. Elles servent à fidéliser les clients de quatre façons : (1) l'application indique la disponibilité des produits et propose le click and collect ; (2) la carte de fidélité permet d'envoyer des offres personnalisées adaptées aux sports pratiqués par le client ; (3) l'omnicanal assure un parcours fluide entre magasin et Internet, le client étant reconnu partout ; (4) les avis en ligne et un SAV rapide renforcent la confiance. En créant une relation personnalisée, Decathlon donne au client le sentiment d'être reconnu, ce qui le fidélise même face aux géants de la vente en ligne.","rubric":"Mention des sources de données ; développement des 4 points (appli/click and collect, offres personnalisées, omnicanal, confiance/SAV) ; lien explicite entre données et sentiment d'être reconnu ; référence à la concurrence du e-commerce."},{"type":"explain","position":9,"prompt":"Explique ce qu'est une base de données et pourquoi elle est indispensable pour une entreprise comme Decathlon.","modelAnswer":"Une base de données est un grand classeur numérique où sont rangées toutes les informations de l'entreprise. Pour Decathlon, qui gère des milliers de produits et des millions de clients, il est impossible de tout organiser à la main. La base centralise les données des puces RFID, de l'application, de la carte de fidélité et des ventes. Ces données sont collectées, traitées et sécurisées, car certaines sont des données personnelles. C'est à partir de cette base que Decathlon peut personnaliser la relation client et gérer ses stocks. Comme un cerveau unique qui reçoit des informations de tous les organes du corps pour prendre les bonnes décisions.","rubric":"Définition correcte de la base de données ; justification par la taille de Decathlon ; mention des sources qui l'alimentent ; mention de la sécurisation des données personnelles ; lien avec les usages concrets (gestion des stocks et relation client)."},{"type":"explain","position":10,"prompt":"Explique la différence entre une offre personnalisée et une publicité au hasard, et pourquoi la première est plus efficace pour fidéliser.","modelAnswer":"Une publicité au hasard est envoyée à tous les clients sans tenir compte de leurs habitudes. Une offre personnalisée, au contraire, s'appuie sur les données de la carte de fidélité : Decathlon connaît les sports pratiqués par le client et lui envoie uniquement les promotions qui l'intéressent vraiment. Comme un vendeur qui se souvient de vous et vous propose exactement ce dont vous avez besoin, sans vous faire perdre de temps. Le client se sent reconnu, ce qui crée de la confiance et l'incite à rester fidèle à Decathlon plutôt que d'aller acheter chez un concurrent en ligne.","rubric":"Distinction claire entre publicité générale et offre personnalisée ; rôle de la carte de fidélité et des données d'achat ; lien entre personnalisation, sentiment d'être reconnu et fidélisation ; analogie ou exemple concret."},{"type":"explain","position":11,"prompt":"Explique en quoi le système d'information de Decathlon profite à la fois aux clients et à la gestion interne de l'entreprise.","modelAnswer":"Le système d'information sert à deux grandes choses. D'un côté, il améliore la relation client : l'application indique les stocks disponibles, la carte de fidélité permet des offres personnalisées, l'omnicanal assure un parcours sans coupure et les données de confiance (avis, SAV) fidélisent. De l'autre côté, en coulisses, ces mêmes données aident à gérer les stocks : éviter les ruptures et placer le bon produit dans le bon magasin. Bien gérer en interne, c'est aussi mieux servir le client. Le système d'information est donc le cœur qui fait circuler l'information dans toute l'entreprise.","rubric":"Double rôle du système d'information clairement distingué (relation client et gestion interne) ; exemples tirés du texte pour chaque rôle ; lien entre bonne gestion interne et meilleur service client."}]}</script>
+<script>(function () {
+  var data = JSON.parse(document.getElementById('recall-data').textContent);
+  var cards = (data && data.cards) || [];
+  var app = document.getElementById('app');
+  var idx = 0;
+  var qcmScores = [];
+  var LABELS = { cloze: 'Textes à trous', qcm: 'QCM', explain: 'Réponses libres', flashcard: 'Flashcards' };
+  var typeSet = {};
+  cards.forEach(function (c) { typeSet[c.type] = 1; });
+  var multiType = Object.keys(typeSet).length > 1;
+
+  function scoreQcmMulti(selected, correct) {
+    if (!correct.length) return 0;
+    var c = {}, s = {};
+    correct.forEach(function (i) { c[i] = true; });
+    selected.forEach(function (i) { s[i] = true; });
+    var good = 0, bad = 0;
+    Object.keys(s).forEach(function (k) { if (c[k]) good++; else bad++; });
+    var ratio = (good - bad) / correct.length;
+    return Math.round(Math.max(0, Math.min(1, ratio)) * 100);
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function clear() { while (app.firstChild) app.removeChild(app.firstChild); }
+
+  function btn(label, cls, onClick) {
+    var b = el('button', cls || 'btn', label);
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  function render() {
+    clear();
+    if (idx >= cards.length) return renderDone();
+    var card = cards[idx];
+    if (multiType) app.appendChild(el('p', 'section', LABELS[card.type] || ''));
+    var p = el('p', 'progress', (idx + 1) + ' / ' + cards.length);
+    app.appendChild(p);
+    var box = el('section', 'card');
+    app.appendChild(box);
+    if (card.type === 'flashcard') renderReveal(box, card.front, card.back);
+    else if (card.type === 'cloze') renderCloze(box, card);
+    else if (card.type === 'qcm') renderQcm(box, card);
+    else if (card.type === 'explain') renderExplain(box, card);
+    else next();
+  }
+
+  function next() { idx++; render(); }
+
+  function renderReveal(box, question, answer) {
+    box.appendChild(el('p', 'q', question));
+    var reveal = btn('Révéler', 'btn', function () {
+      reveal.remove();
+      box.appendChild(el('div', 'reveal', answer));
+      box.appendChild(btn('Suivant', 'btn', next));
+    });
+    box.appendChild(reveal);
+  }
+
+  function renderCloze(box, card) {
+    box.appendChild(el('p', 'q', card.maskedText));
+    var reveal = btn('Révéler', 'btn', function () {
+      reveal.remove();
+      var wrap = el('div', 'reveal');
+      wrap.appendChild(el('p', null, (card.answers.length > 1 ? 'Réponses :' : 'Réponse :')));
+      var ul = el('ul', 'answers');
+      card.answers.forEach(function (a) {
+        ul.appendChild(el('li', null, a.answer + (a.hint ? ' (' + a.hint + ')' : '')));
+      });
+      wrap.appendChild(ul);
+      box.appendChild(wrap);
+      box.appendChild(btn('Suivant', 'btn', next));
+    });
+    box.appendChild(reveal);
+  }
+
+  function renderQcm(box, card) {
+    box.appendChild(el('p', 'q', card.question));
+    if (card.multi) box.appendChild(el('p', 'hint', 'Plusieurs réponses possibles.'));
+    var selected = [];
+    var validated = false;
+    var optButtons = [];
+    var validateBtn = null;
+
+    function validate() {
+      if (validated) return;
+      validated = true;
+      var score = scoreQcmMulti(selected, card.correctIndices);
+      qcmScores.push(score);
+      optButtons.forEach(function (b, i) {
+        b.disabled = true;
+        var isAnswer = card.correctIndices.indexOf(i) !== -1;
+        var isSel = selected.indexOf(i) !== -1;
+        b.classList.remove('sel');
+        if (isAnswer) b.classList.add('ok');
+        else if (isSel) b.classList.add('ko');
+      });
+      if (validateBtn) validateBtn.remove();
+      var perfect = score === 100;
+      var v = el('p', 'verdict ' + (perfect ? 'ok' : 'ko'),
+        perfect ? 'Bonne réponse !' : 'Pas tout à fait (' + score + '%).');
+      box.appendChild(v);
+      if (card.explanation) {
+        box.appendChild(el('p', 'explanation', (perfect ? '' : 'Pourquoi : ') + card.explanation));
+      }
+      box.appendChild(btn('Suivant', 'btn', next));
+    }
+
+    card.options.forEach(function (opt, i) {
+      var b = el('button', 'opt', opt);
+      b.addEventListener('click', function () {
+        if (validated) return;
+        if (card.multi) {
+          var pos = selected.indexOf(i);
+          if (pos === -1) { selected.push(i); b.classList.add('sel'); }
+          else { selected.splice(pos, 1); b.classList.remove('sel'); }
+        } else {
+          selected = [i];
+          b.classList.add('sel');
+          validate();
+        }
+      });
+      optButtons.push(b);
+      box.appendChild(b);
+    });
+
+    if (card.multi) {
+      validateBtn = btn('Valider', 'btn', validate);
+      box.appendChild(validateBtn);
+    }
+  }
+
+  function renderExplain(box, card) {
+    box.appendChild(el('p', 'q', card.prompt));
+    var ta = el('textarea');
+    ta.placeholder = 'Écris ta réponse avec tes mots…';
+    box.appendChild(ta);
+    var reveal = btn('Voir la réponse modèle', 'btn', function () {
+      reveal.remove();
+      ta.disabled = true;
+      var wrap = el('div', 'reveal');
+      wrap.appendChild(el('p', null, 'Réponse modèle :'));
+      wrap.appendChild(el('p', null, card.modelAnswer));
+      if (card.rubric) wrap.appendChild(el('p', 'hint', 'Critères : ' + card.rubric));
+      box.appendChild(wrap);
+      box.appendChild(btn('Suivant', 'btn', next));
+    });
+    box.appendChild(reveal);
+  }
+
+  function renderDone() {
+    var box = el('section', 'card done');
+    box.appendChild(el('p', 'emoji', '🎉'));
+    box.appendChild(el('p', 'q', 'Terminé !'));
+    if (qcmScores.length) {
+      var avg = Math.round(qcmScores.reduce(function (a, b) { return a + b; }, 0) / qcmScores.length);
+      box.appendChild(el('p', 'score', 'Score QCM moyen : ' + avg + '%'));
+    }
+    box.appendChild(btn('Recommencer', 'btn', function () {
+      idx = 0; qcmScores = []; render();
+    }));
+    app.appendChild(box);
+  }
+
+  render();
+})();</script>
+</body>
+</html>
