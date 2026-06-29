@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestion des stocks — Sujet 1 · Révision</title>
+<meta name="description" content="Révise le sujet « Gestion des stocks » avec 4 modes : flashcards, textes à trous, QCM et réponses libres. 100 % hors-ligne.">
+<meta name="theme-color" content="#4f46e5">
+<style>
+  :root {
+    color-scheme: light;
+    --indigo: #4f46e5;
+    --indigo-dark: #4338ca;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --radius: 1rem;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: clamp(1.5rem, 4vw, 3.5rem) 1rem 4rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    line-height: 1.55;
+    background:
+      radial-gradient(120% 80% at 100% 0%, #eef2ff 0%, rgba(238,242,255,0) 55%),
+      radial-gradient(110% 90% at 0% 0%, #f5f3ff 0%, rgba(245,243,255,0) 50%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+  main { max-width: 760px; margin: 0 auto; }
+
+  /* ---------- Back link ---------- */
+  .back {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .88rem; font-weight: 600; color: var(--muted);
+    text-decoration: none; margin-bottom: 1.5rem;
+    transition: color .15s ease;
+  }
+  .back:hover { color: var(--indigo); }
+  .back svg { width: 1rem; height: 1rem; transition: transform .15s ease; }
+  .back:hover svg { transform: translateX(-3px); }
+
+  /* ---------- Header ---------- */
+  header { text-align: center; margin-bottom: clamp(1.75rem, 5vw, 2.75rem); }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .45rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--indigo);
+    background: rgba(79,70,229,.09);
+    border: 1px solid rgba(79,70,229,.18);
+    padding: .35rem .75rem; border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+  .eyebrow .dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--indigo); }
+  h1 {
+    font-size: clamp(1.9rem, 6vw, 2.85rem);
+    line-height: 1.1; margin: 0 0 .6rem; letter-spacing: -.02em;
+  }
+  .subtitle { margin: 0 auto; max-width: 30rem; color: var(--muted); font-size: 1.02rem; }
+
+  /* ---------- Mode grid ---------- */
+  .grid {
+    display: grid; gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: clamp(1.5rem, 5vw, 2.5rem);
+  }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+
+  .mode {
+    position: relative; display: flex; flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+    text-decoration: none; color: inherit;
+    box-shadow: 0 1px 2px rgba(16,24,40,.04);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    overflow: hidden;
+  }
+  .mode::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 55%, #fff));
+    opacity: 0; transition: opacity .18s ease;
+  }
+  .mode:hover, .mode:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(16,24,40,.10);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+    outline: none;
+  }
+  .mode:hover::before, .mode:focus-visible::before { opacity: 1; }
+
+  .mode-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; margin-bottom: .9rem; }
+  .icon {
+    flex: 0 0 auto; width: 2.9rem; height: 2.9rem; border-radius: .8rem;
+    display: grid; place-items: center;
+    background: color-mix(in srgb, var(--accent) 12%, #fff);
+    color: var(--accent);
+  }
+  .icon svg { width: 1.5rem; height: 1.5rem; }
+  .count {
+    font-size: .78rem; font-weight: 600; color: var(--muted);
+    background: var(--bg); border: 1px solid var(--line);
+    padding: .25rem .6rem; border-radius: 999px; white-space: nowrap;
+  }
+  .mode h2 { font-size: 1.18rem; margin: 0 0 .3rem; letter-spacing: -.01em; }
+  .mode p { margin: 0; color: var(--muted); font-size: .92rem; flex: 1; }
+  .cta {
+    display: inline-flex; align-items: center; gap: .35rem;
+    margin-top: 1.1rem; font-weight: 600; font-size: .9rem; color: var(--accent);
+  }
+  .cta svg { width: 1rem; height: 1rem; transition: transform .18s ease; }
+  .mode:hover .cta svg, .mode:focus-visible .cta svg { transform: translateX(3px); }
+
+  /* per-mode accent colours */
+  .m-cards { --accent: #7c3aed; }
+  .m-cloze { --accent: #4f46e5; }
+  .m-qcm   { --accent: #0d9488; }
+  .m-free  { --accent: #db2777; }
+
+  /* ---------- Footer ---------- */
+  footer { text-align: center; margin-top: clamp(2rem, 6vw, 3rem); color: var(--muted); font-size: .85rem; }
+  footer .pill {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .3rem .7rem; border-radius: 999px;
+    background: rgba(255,255,255,.6); border: 1px solid var(--line);
+  }
+
+  /* ---------- Entrance animation ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(12px); animation: rise .5s ease forwards; }
+    .grid .mode:nth-child(1) { animation-delay: .05s; }
+    .grid .mode:nth-child(2) { animation-delay: .12s; }
+    .grid .mode:nth-child(3) { animation-delay: .19s; }
+    .grid .mode:nth-child(4) { animation-delay: .26s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+<main>
+  <a class="back reveal" href="../">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+    Tous les sujets
+  </a>
+  <header class="reveal">
+    <span class="eyebrow"><span class="dot"></span>Sujet 1 · Révision</span>
+    <h1>Gestion des stocks</h1>
+    <p class="subtitle">Quatre façons de réviser le même sujet. Tout fonctionne hors-ligne, sur ton téléphone comme sur ton ordinateur.</p>
+  </header>
+
+  <section class="grid">
+    <a class="mode m-cards reveal" href="cards.html">
+      <div class="mode-top">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+        </span>
+        <span class="count">4 cartes</span>
+      </div>
+      <h2>Flashcards</h2>
+      <p>Mémorise les notions clés une par une. Une question, tu réfléchis, tu révèles la réponse.</p>
+      <span class="cta">Commencer
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+
+    <a class="mode m-cloze reveal" href="questions_trous.html">
+      <div class="mode-top">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h7M14 12h6M4 17h10"/><rect x="14.5" y="10.4" width="4" height="3.2" rx=".6" fill="currentColor" stroke="none" opacity=".25"/></svg>
+        </span>
+        <span class="count">67 questions</span>
+      </div>
+      <h2>Textes à trous</h2>
+      <p>L'entraînement le plus complet : complète les mots manquants pour ancrer le vocabulaire.</p>
+      <span class="cta">S'entraîner
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+
+    <a class="mode m-qcm reveal" href="qcm.html">
+      <div class="mode-top">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+        </span>
+        <span class="count">4 questions</span>
+      </div>
+      <h2>QCM</h2>
+      <p>Teste-toi avec des questions à choix multiples et obtiens un score à la fin.</p>
+      <span class="cta">Se tester
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+
+    <a class="mode m-free reveal" href="free.html">
+      <div class="mode-top">
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        </span>
+        <span class="count">4 questions</span>
+      </div>
+      <h2>Réponses libres</h2>
+      <p>Rédige ta réponse avec tes propres mots, puis compare-la à la réponse modèle.</p>
+      <span class="cta">Approfondir
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+  </section>
+
+  <footer class="reveal">
+    <span class="pill">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      Aucune connexion requise — généré par recall
+    </span>
+  </footer>
+</main>
+</body>
+</html>

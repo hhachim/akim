@@ -3,235 +3,174 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>À RÉCITER PAR CŒUR — recall</title>
-<style>:root { color-scheme: light; }
-* { box-sizing: border-box; }
-body {
-  margin: 0; padding: 1.5rem 1rem 4rem;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  color: #1f2937; background: #f8fafc; line-height: 1.5;
-}
-main { max-width: 640px; margin: 0 auto; }
-header { margin-bottom: 1.5rem; text-align: center; }
-header h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
-header p { margin: 0; color: #6b7280; font-size: .875rem; }
-.progress { color: #6b7280; font-size: .875rem; text-align: right; margin-bottom: .5rem; }
-.card {
-  background: #fff; border: 1px solid #e5e7eb; border-radius: .75rem;
-  padding: 1.25rem; box-shadow: 0 1px 2px rgba(0,0,0,.04);
-}
-.q { font-size: 1.2rem; font-weight: 600; margin: 0 0 1rem; white-space: pre-wrap; }
-.hint { color: #6b7280; font-size: .875rem; margin: -.5rem 0 1rem; }
-.reveal { background: #f1f5f9; border-radius: .5rem; padding: 1rem; margin: 1rem 0; white-space: pre-wrap; }
-ul.answers { margin: .5rem 0 0; padding-left: 1.25rem; }
-textarea {
-  width: 100%; min-height: 7rem; padding: .75rem; border: 1px solid #cbd5e1;
-  border-radius: .5rem; font: inherit; resize: vertical; margin-bottom: 1rem;
-}
-button {
-  font: inherit; cursor: pointer; border-radius: .5rem; border: 1px solid transparent;
-}
-.btn {
-  display: block; width: 100%; padding: .85rem 1rem; font-weight: 600;
-  background: #4f46e5; color: #fff; margin-top: 1rem;
-}
-.btn:hover { background: #4338ca; }
-.btn:disabled { opacity: .5; cursor: not-allowed; }
-.opt {
-  display: block; width: 100%; text-align: left; padding: .8rem 1rem; margin: .5rem 0;
-  background: #fff; border: 1px solid #cbd5e1; color: #1f2937;
-}
-.opt:hover { border-color: #818cf8; }
-.opt.sel { border-color: #4f46e5; background: #eef2ff; }
-.opt.ok { border-color: #16a34a; background: #f0fdf4; }
-.opt.ko { border-color: #dc2626; background: #fef2f2; }
-.opt[disabled] { cursor: default; }
-.verdict { font-weight: 600; margin: 1rem 0 0; }
-.verdict.ok { color: #16a34a; }
-.verdict.ko { color: #dc2626; }
-.explanation {
-  background: #f1f5f9; border-radius: .5rem; padding: .75rem; margin-top: .75rem;
-  font-size: .9rem; white-space: pre-wrap;
-}
-.done { text-align: center; }
-.done .emoji { font-size: 2.5rem; }
-.score { font-size: 1.25rem; font-weight: 700; margin: 1rem 0; }</style>
+<title>Révisions · Sciences de gestion</title>
+<meta name="description" content="Choisis un sujet à réviser. Flashcards, textes à trous, QCM et réponses libres — 100 % hors-ligne.">
+<meta name="theme-color" content="#4f46e5">
+<style>
+  :root {
+    color-scheme: light;
+    --indigo: #4f46e5;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --radius: 1rem;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding: clamp(1.5rem, 4vw, 3.5rem) 1rem 4rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    line-height: 1.55;
+    background:
+      radial-gradient(120% 80% at 100% 0%, #eef2ff 0%, rgba(238,242,255,0) 55%),
+      radial-gradient(110% 90% at 0% 0%, #f5f3ff 0%, rgba(245,243,255,0) 50%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+  main { max-width: 760px; margin: 0 auto; }
+
+  /* ---------- Header ---------- */
+  header { text-align: center; margin-bottom: clamp(1.75rem, 5vw, 2.75rem); }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .45rem;
+    font-size: .78rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--indigo);
+    background: rgba(79,70,229,.09);
+    border: 1px solid rgba(79,70,229,.18);
+    padding: .35rem .75rem; border-radius: 999px;
+    margin-bottom: 1rem;
+  }
+  .eyebrow .dot { width: .5rem; height: .5rem; border-radius: 50%; background: var(--indigo); }
+  h1 {
+    font-size: clamp(1.9rem, 6vw, 2.85rem);
+    line-height: 1.1; margin: 0 0 .6rem; letter-spacing: -.02em;
+  }
+  .subtitle { margin: 0 auto; max-width: 30rem; color: var(--muted); font-size: 1.02rem; }
+
+  /* ---------- Subject list ---------- */
+  .subjects { display: grid; gap: 1rem; margin-top: clamp(1.5rem, 5vw, 2.5rem); }
+
+  .subject {
+    position: relative; display: flex; align-items: center; gap: 1.1rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.35rem 1.4rem;
+    text-decoration: none; color: inherit;
+    box-shadow: 0 1px 2px rgba(16,24,40,.04);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    overflow: hidden;
+  }
+  .subject::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 55%, #fff));
+    opacity: 0; transition: opacity .18s ease;
+  }
+  .subject:hover, .subject:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(16,24,40,.10);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+    outline: none;
+  }
+  .subject:hover::before, .subject:focus-visible::before { opacity: 1; }
+
+  .badge {
+    flex: 0 0 auto; width: 3.4rem; height: 3.4rem; border-radius: .9rem;
+    display: grid; place-items: center;
+    font-size: 1.25rem; font-weight: 800; letter-spacing: -.02em;
+    background: color-mix(in srgb, var(--accent) 12%, #fff);
+    color: var(--accent);
+  }
+  .badge svg { width: 1.7rem; height: 1.7rem; }
+  .subject-body { flex: 1; min-width: 0; }
+  .subject .kicker { font-size: .76rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); margin: 0 0 .15rem; }
+  .subject h2 { font-size: 1.22rem; margin: 0 0 .25rem; letter-spacing: -.01em; }
+  .subject p { margin: 0; color: var(--muted); font-size: .9rem; }
+  .meta { margin-top: .55rem; display: flex; flex-wrap: wrap; gap: .4rem; }
+  .tag {
+    font-size: .75rem; font-weight: 600; color: var(--muted);
+    background: var(--bg); border: 1px solid var(--line);
+    padding: .22rem .55rem; border-radius: 999px;
+  }
+  .chevron { flex: 0 0 auto; color: var(--muted); transition: transform .18s ease, color .18s ease; }
+  .chevron svg { width: 1.4rem; height: 1.4rem; display: block; }
+  .subject:hover .chevron, .subject:focus-visible .chevron { transform: translateX(4px); color: var(--accent); }
+
+  .subject.soon { cursor: default; opacity: .85; }
+  .subject.soon:hover { transform: none; box-shadow: 0 1px 2px rgba(16,24,40,.04); border-color: var(--line); }
+  .subject.soon::before { display: none; }
+  .subject.soon .badge { background: var(--bg); color: var(--muted); border: 1px dashed var(--line); }
+  .subject.soon .chevron { display: none; }
+  .soon-tag { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); background: var(--bg); border: 1px solid var(--line); padding: .25rem .6rem; border-radius: 999px; }
+
+  .s1 { --accent: #4f46e5; }
+
+  /* ---------- Footer ---------- */
+  footer { text-align: center; margin-top: clamp(2rem, 6vw, 3rem); color: var(--muted); font-size: .85rem; }
+  footer .pill {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .3rem .7rem; border-radius: 999px;
+    background: rgba(255,255,255,.6); border: 1px solid var(--line);
+  }
+
+  /* ---------- Entrance animation ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { opacity: 0; transform: translateY(12px); animation: rise .5s ease forwards; }
+    .subjects .subject:nth-child(1) { animation-delay: .05s; }
+    .subjects .subject:nth-child(2) { animation-delay: .12s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+  }
+</style>
 </head>
 <body>
 <main>
-<header>
-<h1>À RÉCITER PAR CŒUR</h1>
-<p>Quiz hors-ligne — généré par recall. Aucune connexion requise.</p>
-</header>
-<div id="app"></div>
+  <header class="reveal">
+    <span class="eyebrow"><span class="dot"></span>Révisions</span>
+    <h1>Choisis un sujet</h1>
+    <p class="subtitle">Chaque sujet propose plusieurs modes de révision. Tout fonctionne hors-ligne, sur ton téléphone comme sur ton ordinateur.</p>
+  </header>
+
+  <section class="subjects">
+    <a class="subject s1 reveal" href="sujet1-stocks/">
+      <span class="badge" aria-hidden="true">1</span>
+      <div class="subject-body">
+        <p class="kicker">Sujet 1</p>
+        <h2>Gestion des stocks</h2>
+        <p>Le système d'information comme outil d'aide à la décision (Decathlon).</p>
+        <div class="meta">
+          <span class="tag">Flashcards</span>
+          <span class="tag">Textes à trous</span>
+          <span class="tag">QCM</span>
+          <span class="tag">Réponses libres</span>
+        </div>
+      </div>
+      <span class="chevron" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+
+    <div class="subject soon reveal" aria-disabled="true">
+      <span class="badge" aria-hidden="true">2</span>
+      <div class="subject-body">
+        <p class="kicker">Sujet 2</p>
+        <h2>Bientôt disponible</h2>
+        <p>Le prochain sujet de révision arrive ici.</p>
+      </div>
+      <span class="soon-tag">À venir</span>
+    </div>
+  </section>
+
+  <footer class="reveal">
+    <span class="pill">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      Aucune connexion requise — généré par recall
+    </span>
+  </footer>
 </main>
-<script id="recall-data" type="application/json">{"title":"À RÉCITER PAR CŒUR","cards":[{"type":"flashcard","position":0,"front":"Quelles sont les quatre sources qui alimentent en permanence la base de données de Decathlon ?","back":"1. Les puces RFID (étiquettes électroniques sur chaque article)\n2. L'application mobile\n3. La carte de fidélité (qui enregistre les achats)\n4. Toutes les ventes, en magasin et en ligne"},{"type":"flashcard","position":1,"front":"Quels sont les quatre points concrets montrant comment le SI aide Decathlon à gérer ses stocks ?","back":"1. L'inventaire rapide grâce aux puces RFID\n2. Éviter la rupture (manque) et le surstock (excès)\n3. Adapter les produits à chaque magasin selon sa localisation\n4. Anticiper la demande en s'appuyant sur les ventes passées"},{"type":"flashcard","position":2,"front":"Quelle différence y a-t-il entre une rupture de stock et un surstock ?","back":"La rupture : le client veut un produit (ex. crampons taille 40) mais il n'y en a plus — Decathlon perd une vente.\nLe surstock : trop de produits dorment en réserve et coûtent de l'argent pour rien.\nLe SI permet de garder l'équilibre : ni trop, ni trop peu."},{"type":"flashcard","position":3,"front":"Quels sont les deux grands services rendus par la base de données de Decathlon, cités dans la conclusion du développement ?","back":"1. Gérer les stocks à l'intérieur (bon produit, bon endroit, bon moment)\n2. Fidéliser les clients à l'extérieur (via l'application et la carte de fidélité)"},{"type":"cloze","position":4,"maskedText":"Chaque article Decathlon possède une petite étiquette électronique appelée _____ qui s'identifie toute seule, sans contact.","answers":[{"answer":"puce RFID","hint":"technologie d'identification sans fil collée sur le produit"}]},{"type":"cloze","position":5,"maskedText":"Decathlon évite deux problèmes de stock opposés : la _____, quand un client repart sans son produit car le rayon est vide, et le _____, quand trop de produits dorment en réserve et coûtent de l'argent pour rien.","answers":[{"answer":"rupture","hint":"manque de produit disponible"},{"answer":"surstock","hint":"excès de produit en réserve"}]},{"type":"cloze","position":6,"maskedText":"Avant, compter le stock prenait des heures produit par produit. Aujourd'hui, un employé passe un _____ et en quelques _____, tout le stock est connu.","answers":[{"answer":"lecteur","hint":"appareil qui détecte les puces RFID"},{"answer":"minutes","hint":"très court délai, opposé à 'des heures'"}]},{"type":"cloze","position":7,"maskedText":"Les données montrent ce qui se vend selon l'emplacement : un magasin au bord de la mer vend du matériel de _____, un magasin à la montagne vend du matériel de _____. Chaque magasin reçoit donc les bons produits.","answers":[{"answer":"surf","hint":"sport de mer cité dans le texte"},{"answer":"ski","hint":"sport de montagne cité dans le texte"}]},{"type":"qcm","position":8,"question":"Combien de temps faut-il aujourd'hui pour réaliser un inventaire dans un magasin Decathlon grâce aux puces RFID ?","options":["Plusieurs heures, comme avant","Quelques minutes","Une journée entière","Quelques secondes par article"],"correctIndices":[1],"multi":false,"explanation":"Le texte précise qu'avant il fallait passer les produits un par un pendant des heures ; aujourd'hui, un employé passe un lecteur et 'en quelques minutes, tout le stock est compté'."},{"type":"qcm","position":9,"question":"Quelle marque Decathlon est associée à la randonnée dans le texte ?","options":["Kipsta","Domyos","Quechua","Itiwit"],"correctIndices":[2],"multi":false,"explanation":"Le texte cite explicitement : 'Kipsta pour le football, Quechua pour la randonnée, Domyos pour le fitness'. Quechua est donc la bonne réponse."},{"type":"qcm","position":10,"question":"Comment Decathlon anticipe-t-il la demande avant une grande compétition de football ?","options":["En interrogeant ses clients via l'application","En commandant à l'avance plus de ballons et de maillots grâce aux données des années passées","En ouvrant des magasins temporaires près des stades","En réduisant ses autres stocks pour faire de la place"],"correctIndices":[1],"multi":false,"explanation":"Le texte indique que Decathlon consulte les ventes des années passées pour prévoir ce qui va se vendre et commande ballons et maillots à l'avance : 'Elle ne subit pas la demande : elle l'anticipe.'"},{"type":"qcm","position":11,"question":"Pourquoi les données collectées par Decathlon doivent-elles être sécurisées ?","options":["Parce qu'elles contiennent les secrets industriels des marques","Parce que ce sont parfois des données personnelles","Parce que les concurrents pourraient les voler","Parce que la base de données est trop grande"],"correctIndices":[1],"multi":false,"explanation":"Le texte précise que les données 'sont collectées, traitées et sécurisées, car ce sont parfois des données personnelles' (achats, historique client via carte de fidélité ou application)."},{"type":"explain","position":12,"prompt":"Explique en quoi le système d'information de Decathlon est un 'outil d'aide à la décision' pour les stocks. Donne au moins deux exemples concrets tirés du texte.","modelAnswer":"Le système d'information ne se contente pas de stocker des données : il permet à Decathlon de prendre de meilleures décisions. Par exemple, grâce aux puces RFID, l'entreprise sait en temps réel ce qu'elle possède et peut décider immédiatement quoi recommander. Grâce aux données de ventes passées, elle peut anticiper une forte demande (ex. ballons avant une compétition) et commander à l'avance. Dans les deux cas, c'est la donnée qui guide la décision : quoi commander, en quelle quantité, pour quel magasin, à quel moment.","rubric":"Définir 'aide à la décision' (la donnée guide le choix). Citer au moins deux des quatre points du développement (inventaire RFID, rupture/surstock, adaptation locale, anticipation). Conclure en liant données et décisions concrètes."},{"type":"explain","position":13,"prompt":"Explique pourquoi un magasin Decathlon situé en montagne ne reçoit pas les mêmes produits qu'un magasin situé au bord de la mer, et quel rôle joue le système d'information dans cette différence.","modelAnswer":"Les données de vente enregistrées dans la base de données montrent ce qui se vend réellement dans chaque magasin. Un magasin en montagne vend beaucoup de matériel de ski ; un magasin en bord de mer vend beaucoup de matériel de surf. Le SI analyse ces données et permet d'adapter les approvisionnements à chaque magasin selon sa clientèle locale. Ainsi, Decathlon évite de mettre des skis à la plage, ce qui serait un surstock inutile.","rubric":"Citer les exemples mer/montagne du texte. Expliquer le rôle des données de vente locales. Utiliser le vocabulaire 'adaptation' et/ou 'surstock'. Ne pas inventer d'autres exemples absents du texte."},{"type":"explain","position":14,"prompt":"Explique la différence entre 'collecter des données' et 'prendre une décision', et montre comment le système d'information de Decathlon fait le lien entre les deux.","modelAnswer":"Collecter des données, c'est enregistrer des faits bruts : une vente en caisse, un achat sur l'application, le mouvement d'un article via sa puce RFID. Seules, ces données ne servent à rien. Prendre une décision, c'est choisir une action concrète : commander tel produit, en telle quantité, pour tel magasin. Le SI fait le lien en traitant les données brutes pour en tirer une information utile. Par exemple, les données de ventes des années passées deviennent la décision de commander plus de ballons avant une compétition.","rubric":"Distinguer clairement donnée brute et décision. Montrer lerôle de traitement joué par la base de données. Utiliser au moins un exemple précis du texte. Ne pas confondre 'collecter' et 'analyser'."},{"type":"explain","position":15,"prompt":"Explique pourquoi la conclusion affirme que 'tout repose sur une seule richesse : la donnée'. En quoi la donnée est-elle une richesse pour Decathlon ?","modelAnswer":"La donnée est une richesse parce qu'elle est la matière première de toutes les décisions de Decathlon. Sans elle, l'entreprise ne saurait pas ce qu'elle a en stock, ce qui se vend, ni ce qu'il faut commander. Grâce aux données collectées par les puces RFID, l'application, la carte de fidélité et les ventes, Decathlon peut gérer ses stocks avec précision ET fidéliser ses clients. Une seule base de données rend donc deux grands services, ce qui lui donne une valeur stratégique centrale.","rubric":"Expliquer que la donnée est le point de départ de toute décision. Citer les deux utilités de la base (stocks + fidélisation). Utiliser le mot 'stratégique' ou expliquer pourquoi c'est un avantage pour l'entreprise."}]}</script>
-<script>(function () {
-  var data = JSON.parse(document.getElementById('recall-data').textContent);
-  var cards = (data && data.cards) || [];
-  var app = document.getElementById('app');
-  var idx = 0;
-  var qcmScores = [];
-
-  function scoreQcmMulti(selected, correct) {
-    if (!correct.length) return 0;
-    var c = {}, s = {};
-    correct.forEach(function (i) { c[i] = true; });
-    selected.forEach(function (i) { s[i] = true; });
-    var good = 0, bad = 0;
-    Object.keys(s).forEach(function (k) { if (c[k]) good++; else bad++; });
-    var ratio = (good - bad) / correct.length;
-    return Math.round(Math.max(0, Math.min(1, ratio)) * 100);
-  }
-
-  function el(tag, cls, text) {
-    var n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text != null) n.textContent = text;
-    return n;
-  }
-
-  function clear() { while (app.firstChild) app.removeChild(app.firstChild); }
-
-  function btn(label, cls, onClick) {
-    var b = el('button', cls || 'btn', label);
-    b.addEventListener('click', onClick);
-    return b;
-  }
-
-  function render() {
-    clear();
-    if (idx >= cards.length) return renderDone();
-    var card = cards[idx];
-    var p = el('p', 'progress', (idx + 1) + ' / ' + cards.length);
-    app.appendChild(p);
-    var box = el('section', 'card');
-    app.appendChild(box);
-    if (card.type === 'flashcard') renderReveal(box, card.front, card.back);
-    else if (card.type === 'cloze') renderCloze(box, card);
-    else if (card.type === 'qcm') renderQcm(box, card);
-    else if (card.type === 'explain') renderExplain(box, card);
-    else next();
-  }
-
-  function next() { idx++; render(); }
-
-  function renderReveal(box, question, answer) {
-    box.appendChild(el('p', 'q', question));
-    var reveal = btn('Révéler', 'btn', function () {
-      reveal.remove();
-      box.appendChild(el('div', 'reveal', answer));
-      box.appendChild(btn('Suivant', 'btn', next));
-    });
-    box.appendChild(reveal);
-  }
-
-  function renderCloze(box, card) {
-    box.appendChild(el('p', 'q', card.maskedText));
-    var reveal = btn('Révéler', 'btn', function () {
-      reveal.remove();
-      var wrap = el('div', 'reveal');
-      wrap.appendChild(el('p', null, (card.answers.length > 1 ? 'Réponses :' : 'Réponse :')));
-      var ul = el('ul', 'answers');
-      card.answers.forEach(function (a) {
-        ul.appendChild(el('li', null, a.answer + (a.hint ? ' (' + a.hint + ')' : '')));
-      });
-      wrap.appendChild(ul);
-      box.appendChild(wrap);
-      box.appendChild(btn('Suivant', 'btn', next));
-    });
-    box.appendChild(reveal);
-  }
-
-  function renderQcm(box, card) {
-    box.appendChild(el('p', 'q', card.question));
-    if (card.multi) box.appendChild(el('p', 'hint', 'Plusieurs réponses possibles.'));
-    var selected = [];
-    var validated = false;
-    var optButtons = [];
-    var validateBtn = null;
-
-    function validate() {
-      if (validated) return;
-      validated = true;
-      var score = scoreQcmMulti(selected, card.correctIndices);
-      qcmScores.push(score);
-      optButtons.forEach(function (b, i) {
-        b.disabled = true;
-        var isAnswer = card.correctIndices.indexOf(i) !== -1;
-        var isSel = selected.indexOf(i) !== -1;
-        b.classList.remove('sel');
-        if (isAnswer) b.classList.add('ok');
-        else if (isSel) b.classList.add('ko');
-      });
-      if (validateBtn) validateBtn.remove();
-      var perfect = score === 100;
-      var v = el('p', 'verdict ' + (perfect ? 'ok' : 'ko'),
-        perfect ? 'Bonne réponse !' : 'Pas tout à fait (' + score + '%).');
-      box.appendChild(v);
-      if (card.explanation) {
-        box.appendChild(el('p', 'explanation', (perfect ? '' : 'Pourquoi : ') + card.explanation));
-      }
-      box.appendChild(btn('Suivant', 'btn', next));
-    }
-
-    card.options.forEach(function (opt, i) {
-      var b = el('button', 'opt', opt);
-      b.addEventListener('click', function () {
-        if (validated) return;
-        if (card.multi) {
-          var pos = selected.indexOf(i);
-          if (pos === -1) { selected.push(i); b.classList.add('sel'); }
-          else { selected.splice(pos, 1); b.classList.remove('sel'); }
-        } else {
-          selected = [i];
-          b.classList.add('sel');
-          validate();
-        }
-      });
-      optButtons.push(b);
-      box.appendChild(b);
-    });
-
-    if (card.multi) {
-      validateBtn = btn('Valider', 'btn', validate);
-      box.appendChild(validateBtn);
-    }
-  }
-
-  function renderExplain(box, card) {
-    box.appendChild(el('p', 'q', card.prompt));
-    var ta = el('textarea');
-    ta.placeholder = 'Écris ta réponse avec tes mots…';
-    box.appendChild(ta);
-    var reveal = btn('Voir la réponse modèle', 'btn', function () {
-      reveal.remove();
-      ta.disabled = true;
-      var wrap = el('div', 'reveal');
-      wrap.appendChild(el('p', null, 'Réponse modèle :'));
-      wrap.appendChild(el('p', null, card.modelAnswer));
-      if (card.rubric) wrap.appendChild(el('p', 'hint', 'Critères : ' + card.rubric));
-      box.appendChild(wrap);
-      box.appendChild(btn('Suivant', 'btn', next));
-    });
-    box.appendChild(reveal);
-  }
-
-  function renderDone() {
-    var box = el('section', 'card done');
-    box.appendChild(el('p', 'emoji', '🎉'));
-    box.appendChild(el('p', 'q', 'Terminé !'));
-    if (qcmScores.length) {
-      var avg = Math.round(qcmScores.reduce(function (a, b) { return a + b; }, 0) / qcmScores.length);
-      box.appendChild(el('p', 'score', 'Score QCM moyen : ' + avg + '%'));
-    }
-    box.appendChild(btn('Recommencer', 'btn', function () {
-      idx = 0; qcmScores = []; render();
-    }));
-    app.appendChild(box);
-  }
-
-  render();
-})();</script>
 </body>
 </html>

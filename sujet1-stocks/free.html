@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestion des stocks - Sujet 1 -v1 — recall</title>
+<style>:root { color-scheme: light; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 1.5rem 1rem 4rem;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: #1f2937; background: #f8fafc; line-height: 1.5;
+}
+main { max-width: 640px; margin: 0 auto; }
+header { margin-bottom: 1.5rem; text-align: center; }
+header h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
+header p { margin: 0; color: #6b7280; font-size: .875rem; }
+.progress { color: #6b7280; font-size: .875rem; text-align: right; margin-bottom: .5rem; }
+.section { color: #4f46e5; font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; margin: 0 0 .25rem; }
+.card {
+  background: #fff; border: 1px solid #e5e7eb; border-radius: .75rem;
+  padding: 1.25rem; box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+.q { font-size: 1.2rem; font-weight: 600; margin: 0 0 1rem; white-space: pre-wrap; }
+.hint { color: #6b7280; font-size: .875rem; margin: -.5rem 0 1rem; }
+.reveal { background: #f1f5f9; border-radius: .5rem; padding: 1rem; margin: 1rem 0; white-space: pre-wrap; }
+ul.answers { margin: .5rem 0 0; padding-left: 1.25rem; }
+textarea {
+  width: 100%; min-height: 7rem; padding: .75rem; border: 1px solid #cbd5e1;
+  border-radius: .5rem; font: inherit; resize: vertical; margin-bottom: 1rem;
+}
+button {
+  font: inherit; cursor: pointer; border-radius: .5rem; border: 1px solid transparent;
+}
+.btn {
+  display: block; width: 100%; padding: .85rem 1rem; font-weight: 600;
+  background: #4f46e5; color: #fff; margin-top: 1rem;
+}
+.btn:hover { background: #4338ca; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.opt {
+  display: block; width: 100%; text-align: left; padding: .8rem 1rem; margin: .5rem 0;
+  background: #fff; border: 1px solid #cbd5e1; color: #1f2937;
+}
+.opt:hover { border-color: #818cf8; }
+.opt.sel { border-color: #4f46e5; background: #eef2ff; }
+.opt.ok { border-color: #16a34a; background: #f0fdf4; }
+.opt.ko { border-color: #dc2626; background: #fef2f2; }
+.opt[disabled] { cursor: default; }
+.verdict { font-weight: 600; margin: 1rem 0 0; }
+.verdict.ok { color: #16a34a; }
+.verdict.ko { color: #dc2626; }
+.explanation {
+  background: #f1f5f9; border-radius: .5rem; padding: .75rem; margin-top: .75rem;
+  font-size: .9rem; white-space: pre-wrap;
+}
+.done { text-align: center; }
+.done .emoji { font-size: 2.5rem; }
+.score { font-size: 1.25rem; font-weight: 700; margin: 1rem 0; }</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Gestion des stocks - Sujet 1 -v1</h1>
+<p>Quiz hors-ligne — généré par recall. Aucune connexion requise.</p>
+</header>
+<div id="app"></div>
+</main>
+<script id="recall-data" type="application/json">{"title":"Gestion des stocks - Sujet 1 -v1","cards":[{"type":"explain","position":8,"prompt":"Explique pourquoi le système d'information de Decathlon est qualifié d'outil d'aide à la décision pour la gestion des stocks.","modelAnswer":"Le système d'information collecte en permanence des données provenant des puces RFID, de l'application mobile, de la carte de fidélité et des ventes. Ces données, rassemblées dans une seule base, permettent à Decathlon de prendre des décisions concrètes : savoir exactement combien d'articles restent en stock grâce à l'inventaire RFID, éviter la rupture ou le surstock, envoyer les bons produits dans chaque magasin selon les habitudes locales, et anticiper la demande future. Ce sont les données qui guident les décisions, ce qui fait du SI un véritable outil d'aide à la décision.","rubric":"- Cite au moins deux sources d'alimentation de la base de données\n- Mentionne au moins deux des quatre avantages concrets pour les stocks\n- Exprime clairement le lien entre données et décisions (les données guident les choix)\n- Ne cite aucune information absente du texte"},{"type":"explain","position":9,"prompt":"Explique la différence entre une rupture de stock et un surstock, et pourquoi ces deux situations sont problématiques pour une entreprise comme Decathlon.","modelAnswer":"La rupture de stock survient quand un client cherche un produit — par exemple une paire de crampons en taille 40 — et qu'il n'y en a plus en rayon : il repart sans rien et Decathlon perd une vente. Le surstock, c'est l'inverse : il y a trop de produits qui dorment en réserve, ce qui coûte de l'argent inutilement. Les deux extrêmes sont néfastes. Grâce aux données collectées en temps réel, Decathlon cherche le bon équilibre : ni trop, ni trop peu.","rubric":"- Définit la rupture de stock et sa conséquence (vente perdue, client insatisfait)\n- Définit le surstock et sa conséquence (coût inutile pour l'entreprise)\n- Mentionne que les données du SI permettent de trouver le bon équilibre entre les deux\n- Peut utiliser un exemple concret tiré du texte (crampons en taille 40)"},{"type":"explain","position":10,"prompt":"Explique comment Decathlon utilise son système d'information pour anticiper la demande, en t'appuyant sur l'exemple donné dans le texte.","modelAnswer":"En analysant les données de ventes des années précédentes, Decathlon peut prévoir ce qui va se vendre dans le futur. Par exemple, avant une grande compétition de football, l'entreprise sait qu'il faudra davantage de ballons et de maillots, et elle les commande à l'avance. Ainsi, Decathlon ne subit pas la demande : elle l'anticipe. C'est une décision basée sur des données historiques, ce qui illustre concrètement le rôle d'aide à la décision du système d'information.","rubric":"- Explique que l'analyse des données passées permet de prévoir la demande future\n- Cite l'exemple de la compétition de football avec les ballons et les maillots\n- Reprend l'idée clé : Decathlon ne subit pas la demande, elle l'anticipe\n- Ne confond pas anticipation (avant que la demande arrive) et simple réapprovisionnement après rupture"},{"type":"explain","position":11,"prompt":"Explique en quoi une seule base de données centralisée suffit à rendre deux grands services à Decathlon, et lesquels.","modelAnswer":"Chez Decathlon, toutes les informations (achats, ventes, données clients) sont rassemblées dans une seule et même base de données, alimentée en permanence par quatre sources. Cette unique base sert d'abord à gérer les stocks : inventaire rapide, évitement des ruptures et du surstock, adaptation de chaque magasin, anticipation de la demande. Mais les mêmes données — notamment celles de l'application et de la carte de fidélité — permettent aussi de garder le contact avec chaque client et de le fidéliser. Une seule base, deux grands services : la gestion interne des stocks et la fidélisation externe des clients.","rubric":"- Rappelle qu'il s'agit d'une seule base alimentée par plusieurs sources\n- Nomme clairement les deux services : gestion des stocks ET fidélisation des clients\n- Identifie les sources liées à la fidélisation (application mobile et carte de fidélité)\n- Distingue bien les deux usages sans les confondre"}]}</script>
+<script>(function () {
+  var data = JSON.parse(document.getElementById('recall-data').textContent);
+  var cards = (data && data.cards) || [];
+  var app = document.getElementById('app');
+  var idx = 0;
+  var qcmScores = [];
+  var LABELS = { cloze: 'Textes à trous', qcm: 'QCM', explain: 'Réponses libres', flashcard: 'Flashcards' };
+  var typeSet = {};
+  cards.forEach(function (c) { typeSet[c.type] = 1; });
+  var multiType = Object.keys(typeSet).length > 1;
+
+  function scoreQcmMulti(selected, correct) {
+    if (!correct.length) return 0;
+    var c = {}, s = {};
+    correct.forEach(function (i) { c[i] = true; });
+    selected.forEach(function (i) { s[i] = true; });
+    var good = 0, bad = 0;
+    Object.keys(s).forEach(function (k) { if (c[k]) good++; else bad++; });
+    var ratio = (good - bad) / correct.length;
+    return Math.round(Math.max(0, Math.min(1, ratio)) * 100);
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function clear() { while (app.firstChild) app.removeChild(app.firstChild); }
+
+  function btn(label, cls, onClick) {
+    var b = el('button', cls || 'btn', label);
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  function render() {
+    clear();
+    if (idx >= cards.length) return renderDone();
+    var card = cards[idx];
+    if (multiType) app.appendChild(el('p', 'section', LABELS[card.type] || ''));
+    var p = el('p', 'progress', (idx + 1) + ' / ' + cards.length);
+    app.appendChild(p);
+    var box = el('section', 'card');
+    app.appendChild(box);
+    if (card.type === 'flashcard') renderReveal(box, card.front, card.back);
+    else if (card.type === 'cloze') renderCloze(box, card);
+    else if (card.type === 'qcm') renderQcm(box, card);
+    else if (card.type === 'explain') renderExplain(box, card);
+    else next();
+  }
+
+  function next() { idx++; render(); }
+
+  function renderReveal(box, question, answer) {
+    box.appendChild(el('p', 'q', question));
+    var reveal = btn('Révéler', 'btn', function () {
+      reveal.remove();
+      box.appendChild(el('div', 'reveal', answer));
+      box.appendChild(btn('Suivant', 'btn', next));
+    });
+    box.appendChild(reveal);
+  }
+
+  function renderCloze(box, card) {
+    box.appendChild(el('p', 'q', card.maskedText));
+    var reveal = btn('Révéler', 'btn', function () {
+      reveal.remove();
+      var wrap = el('div', 'reveal');
+      wrap.appendChild(el('p', null, (card.answers.length > 1 ? 'Réponses :' : 'Réponse :')));
+      var ul = el('ul', 'answers');
+      card.answers.forEach(function (a) {
+        ul.appendChild(el('li', null, a.answer + (a.hint ? ' (' + a.hint + ')' : '')));
+      });
+      wrap.appendChild(ul);
+      box.appendChild(wrap);
+      box.appendChild(btn('Suivant', 'btn', next));
+    });
+    box.appendChild(reveal);
+  }
+
+  function renderQcm(box, card) {
+    box.appendChild(el('p', 'q', card.question));
+    if (card.multi) box.appendChild(el('p', 'hint', 'Plusieurs réponses possibles.'));
+    var selected = [];
+    var validated = false;
+    var optButtons = [];
+    var validateBtn = null;
+
+    function validate() {
+      if (validated) return;
+      validated = true;
+      var score = scoreQcmMulti(selected, card.correctIndices);
+      qcmScores.push(score);
+      optButtons.forEach(function (b, i) {
+        b.disabled = true;
+        var isAnswer = card.correctIndices.indexOf(i) !== -1;
+        var isSel = selected.indexOf(i) !== -1;
+        b.classList.remove('sel');
+        if (isAnswer) b.classList.add('ok');
+        else if (isSel) b.classList.add('ko');
+      });
+      if (validateBtn) validateBtn.remove();
+      var perfect = score === 100;
+      var v = el('p', 'verdict ' + (perfect ? 'ok' : 'ko'),
+        perfect ? 'Bonne réponse !' : 'Pas tout à fait (' + score + '%).');
+      box.appendChild(v);
+      if (card.explanation) {
+        box.appendChild(el('p', 'explanation', (perfect ? '' : 'Pourquoi : ') + card.explanation));
+      }
+      box.appendChild(btn('Suivant', 'btn', next));
+    }
+
+    card.options.forEach(function (opt, i) {
+      var b = el('button', 'opt', opt);
+      b.addEventListener('click', function () {
+        if (validated) return;
+        if (card.multi) {
+          var pos = selected.indexOf(i);
+          if (pos === -1) { selected.push(i); b.classList.add('sel'); }
+          else { selected.splice(pos, 1); b.classList.remove('sel'); }
+        } else {
+          selected = [i];
+          b.classList.add('sel');
+          validate();
+        }
+      });
+      optButtons.push(b);
+      box.appendChild(b);
+    });
+
+    if (card.multi) {
+      validateBtn = btn('Valider', 'btn', validate);
+      box.appendChild(validateBtn);
+    }
+  }
+
+  function renderExplain(box, card) {
+    box.appendChild(el('p', 'q', card.prompt));
+    var ta = el('textarea');
+    ta.placeholder = 'Écris ta réponse avec tes mots…';
+    box.appendChild(ta);
+    var reveal = btn('Voir la réponse modèle', 'btn', function () {
+      reveal.remove();
+      ta.disabled = true;
+      var wrap = el('div', 'reveal');
+      wrap.appendChild(el('p', null, 'Réponse modèle :'));
+      wrap.appendChild(el('p', null, card.modelAnswer));
+      if (card.rubric) wrap.appendChild(el('p', 'hint', 'Critères : ' + card.rubric));
+      box.appendChild(wrap);
+      box.appendChild(btn('Suivant', 'btn', next));
+    });
+    box.appendChild(reveal);
+  }
+
+  function renderDone() {
+    var box = el('section', 'card done');
+    box.appendChild(el('p', 'emoji', '🎉'));
+    box.appendChild(el('p', 'q', 'Terminé !'));
+    if (qcmScores.length) {
+      var avg = Math.round(qcmScores.reduce(function (a, b) { return a + b; }, 0) / qcmScores.length);
+      box.appendChild(el('p', 'score', 'Score QCM moyen : ' + avg + '%'));
+    }
+    box.appendChild(btn('Recommencer', 'btn', function () {
+      idx = 0; qcmScores = []; render();
+    }));
+    app.appendChild(box);
+  }
+
+  render();
+})();</script>
+</body>
+</html>
